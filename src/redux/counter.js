@@ -6,6 +6,12 @@ export const incrementAsync = createAsyncThunk('counter/increase-async', async (
   })
 })
 
+export const incrementWithValueAsync = createAsyncThunk('counter/increase-async', async (payload) => {
+  return new Promise((resolve, reject) => {
+    setTimeout(() => resolve(payload), 2000)
+  })
+})
+
 export const counterSlice = createSlice({
   name: 'counter',
   initialState: {
@@ -31,6 +37,14 @@ export const counterSlice = createSlice({
     [incrementAsync.pending]: (state, action) => {
       state.loading = true
     },
+    [incrementWithValueAsync.fulfilled]: (state, action) => {
+      console.log(action)
+      state.loading = false
+      state.value += action.payload
+    },
+    [incrementWithValueAsync.pending]: (state, action) => {
+      state.loading = true
+    }
   }
 })
 
